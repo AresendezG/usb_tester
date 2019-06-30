@@ -8,26 +8,44 @@ using System.IO;
 namespace USB_Testing
 {
 
-    //Including some changes to do stuff
+    // USB Testing Program in C#
+    // Author: EARG 
+    // ARGE Software® is a Trademark of ARGE Technologies LLC
 
-        // Incluiding some more changes
-   class Program
+    class Program
     {
         static void Main(string[] args)
         {
             bool exit = false;
             string option;
             testing_usb TestUSB = new testing_usb();
-            Console.WriteLine("USB Testing device Application, Enter option or help: ");
+            Console.WriteLine("USB Testing device Application \n " +
+                "1. 'list_devices' for All Devices \n " +
+                "2. list_removable for Only Removable Disk Drives \n " +
+                "3. Help to show menu: ");
+
             while (exit == false)
             {
                 Console.WriteLine("Enter Option: ");
                 option = Console.ReadLine();
                
-                if(option == "List_Devices")
+                if(option.ToLower() == "list_devices")
                 {
                     TestUSB.list_devices();
                 }
+                if (option.ToLower() == "list_removable")
+                {
+                    TestUSB.list_removable();
+                }
+                if (option.ToLower() == "copy_test")
+                {
+                    //TestUSB.list_removable();
+                }
+                if (option.ToLower() == "read_test")
+                {
+                    //TestUSB.list_removable();
+                }
+
                 if (option == "exit")
                 {
                     exit = true;
@@ -40,30 +58,4 @@ namespace USB_Testing
     }
 }
 
-public class testing_usb
-{
 
-    public string[] listed_devices;
-    public void list_devices()
-    {
-        DriveInfo[] allDrives = DriveInfo.GetDrives();
-        int drives_found = 0;
-
-        foreach (DriveInfo d in allDrives)
-        {
-            drives_found++;
-            Console.WriteLine("Drive {0}", d.Name);
-            Console.WriteLine("  Drive type: {0}", d.DriveType);
-            if (d.IsReady == true)
-            {
-                Console.WriteLine("  Volume label: {0}", d.VolumeLabel);
-                Console.WriteLine("  File system: {0}", d.DriveFormat);
-                Console.WriteLine(
-                    "  Total size of drive:            {0, 15} bytes ",
-                    d.TotalSize);
-            }
-        }
-
-        Console.WriteLine("Found: " + drives_found.ToString()+ "Drives Connected");
-    }
-}
