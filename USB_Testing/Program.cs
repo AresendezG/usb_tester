@@ -37,9 +37,22 @@ namespace USB_Testing
                 {
                     TestUSB.list_removable();
                 }
-                if (option.ToLower() == "copy_test")
+                if (option.ToLower() == "list_removable_parsable")
                 {
-                    //TestUSB.list_removable();
+                    TestUSB.list_removable_parsable();
+                }
+                if (option.ToLower() == "count_removable")
+                {
+                    Console.WriteLine((TestUSB.count_removable()).ToString()); //Return the number of attached devices
+                }
+                if (option.ToLower() == "copy_read_test") //Will pick a random device and will try to copy and read back a file
+                {
+                    string filename_source, filename_dest;
+                    Console.WriteLine("Enter filename: ");
+                    filename_source = Console.ReadLine();
+                    Console.WriteLine("Enter filename: ");
+                    filename_dest = Console.ReadLine();
+                    TestUSB.File_CopyRead_Test(filename_source, filename_dest);
                 }
                 if (option.ToLower() == "read_test")
                 {
