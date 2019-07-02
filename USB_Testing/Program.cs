@@ -75,11 +75,11 @@ namespace USB_Testing
                                 Console.WriteLine("Operation Finished with ERROR code: {0}", result);
                         }
                         else
-                            Console.WriteLine("Please enter the Test filename [EX]: USBTest.exe copy_read_test c:\\image\\testimage.jpg");
+                            Console.WriteLine("ERROR: Enter Test filename [EX]: USBTest.exe copy_read_test c:\\image\\testimage.jpg");
                     }
                     catch (IndexOutOfRangeException no_arg)
                     {
-                        Console.WriteLine("Please enter the Test filename [Example]: USBTest.exe copy_read_test c:\\image\\testimage.jpg");
+                        Console.WriteLine("ERROR: No Test filename [Example]: USBTest.exe copy_read_test c:\\image\\testimage.jpg");
                         Console.WriteLine(no_arg.Message);
                     }
                 }
@@ -101,7 +101,7 @@ namespace USB_Testing
 
 
             }
-            catch (IndexOutOfRangeException e)
+            catch (IndexOutOfRangeException)
             {
                
                     Console.Write("Enter argument option USBTesting [option] [option] to execute USB Automated Test: \n" +
