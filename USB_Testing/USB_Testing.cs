@@ -107,7 +107,7 @@ namespace USB_Testing
         }
 
 
-        public int File_WR_Test(string source_filename)
+        public int File_WR_Test(string source_filename, string USB3_Label, string USB2_Label)
         {
             string dest_filename_USB2 = "E:\\testfile.bin";
             string dest_filename_USB3 = "F:\\testfile.bin";
@@ -123,12 +123,12 @@ namespace USB_Testing
 
                 foreach (DriveInfo d in available_drives)
                 {
-                    if (d.VolumeLabel.ToString().IndexOf("MOTOUS") != -1)
+                    if (d.VolumeLabel.ToString().IndexOf(USB3_Label) != -1)
                     {
                         this.USB3_Drives[i] = d.Name;
                         i++;
                     }
-                    if (d.VolumeLabel.ToString().IndexOf("_USB2") != -1)
+                    if (d.VolumeLabel.ToString().IndexOf(USB2_Label) != -1)
                     {
                         this.USB2_Drives[j] = d.Name;
                         j = j+1;

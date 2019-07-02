@@ -28,10 +28,13 @@ namespace USB_Testing
         static void Main(string[] args)
         {
             bool exit = false;
-            string option;
+            string option, usb3_label, usb2_label;
             testing_usb TestUSB = new testing_usb();
 
+            ReadInit_File options_file = new ReadInit_File("init.xml");
 
+            usb3_label = options_file.get_property("usb3_name");
+            usb2_label = options_file.get_property("usb2_name");
             /*
             Console.WriteLine("USB Testing device Application \n " +
                 "1. 'list_devices' for All Devices \n " +
@@ -72,7 +75,7 @@ namespace USB_Testing
                             //filename_source = args[1];
                             //if (args[1] != null)
                             //{
-                            int result = TestUSB.File_WR_Test(filename_source);
+                            int result = TestUSB.File_WR_Test(filename_source, usb3_label, usb2_label);
                             if (result != 0)
                                 Console.WriteLine("Operation Finished with ERROR code: {0}", result);
                             //}
@@ -85,9 +88,10 @@ namespace USB_Testing
                             Console.WriteLine(no_arg.Message);
                         }
                     }
-                    if (option.ToLower() == "read_test")
+                    if (option.ToLower() == "exit")
                     {
-                        //TestUSB.list_removable();
+                        exit = true;
+                        break;
                     }
 
                     if (option == "help" || option == null)
