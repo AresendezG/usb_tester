@@ -152,22 +152,34 @@ namespace USB_Testing
                  data_transfer = (TS_File.Length / ts.TotalSeconds)/ 1000000; //Transferred MB/s
                 Console.WriteLine("Estimated Transfer Speed MB/s USB2.0: {0}", data_transfer);
             }
-            catch (DirectoryNotFoundException dnfe)
+
+            catch (ArgumentNullException dnfe)
             {
-                Console.WriteLine("ERROR: Drive was not found, Disconnected");
+                if (USB2_Drives[usb2_drive] == null) // Argument null exception triggered due to no drives with label USB3 found
+                    Console.WriteLine("ERROR: No USB2.0 Drives were found");
+                else
+                    Console.WriteLine("ERROR: Unexpected Error, see message");
+                return dnfe.HResult;
+            }
+
+            catch (IOException dnfe)
+            {
+                Console.WriteLine("ERROR: IO Error Exception, the file might be already copied to drive or non existent");
+                Console.WriteLine(dnfe.Message);
+                return dnfe.HResult;
+            }
+
+            catch (IndexOutOfRangeException dnfe)
+            {
+                Console.WriteLine("ERROR: No USB2.0 Drive was found");
                 Console.WriteLine(dnfe.Message);
                 return dnfe.HResult;
             }
 
             catch (UnauthorizedAccessException dnfe)
             {
-                Console.WriteLine(dnfe.Message); //File already copied
-                return dnfe.HResult;
-            }
-
-            catch (FileNotFoundException dnfe)
-            {
-                Console.WriteLine("ERROR: File not found");
+                DriveInfo d = new DriveInfo(USB2_Drives[usb2_drive]);
+                Console.WriteLine("ERROR: Cannot Write into this USB Drive: {0}", d.VolumeLabel);
                 Console.WriteLine(dnfe.Message); //File already copied
                 return dnfe.HResult;
             }
@@ -190,21 +202,36 @@ namespace USB_Testing
                 Console.WriteLine("Estimated Transfer Speed USB3.0: {0}", data_transfer);
             }
 
+            catch (ArgumentNullException dnfe)
+            {
+
+                if (USB3_Drives[usb3_drive] == null) // Argument null exception triggered due to no drives with label USB3 found
+                    Console.WriteLine("ERROR: No USB3.0 Drives were found");
+                else
+                    Console.WriteLine("ERROR: Unexpected Error, see message");
+                return dnfe.HResult;
+            }
+
+
+            catch (IndexOutOfRangeException dnfe) // Triggered if USB3_Drives array is empty (No drives were detected)
+            {
+                Console.WriteLine("ERROR: No USB3.0 Drive was found");
+                Console.WriteLine(dnfe.Message);
+            }
+
+
             catch (UnauthorizedAccessException dnfe)
             {
+                DriveInfo d = new DriveInfo(USB3_Drives[usb3_drive]);
+                Console.WriteLine("ERROR: Cannot Write into this USB Drive: {0}",d.VolumeLabel);
                 Console.WriteLine(dnfe.Message); //File already copied
                 return dnfe.HResult;
             }
 
-            catch (DirectoryNotFoundException dnfe)
+            catch (IOException dnfe)
             {
-                Console.WriteLine("ERROR: Drive was not found or was disconnected");
+                Console.WriteLine("ERROR: File might be already copied or Non Existent, see message");
                 Console.WriteLine(dnfe.Message);
-                return dnfe.HResult;
-            }
-            catch (FileNotFoundException dnfe)
-            {
-                Console.WriteLine("ERROR: File not found");
                 return dnfe.HResult;
             }
 
