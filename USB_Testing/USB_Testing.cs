@@ -203,7 +203,7 @@ namespace USB_Testing
                 FileInfo TS_File = new FileInfo(source_filename); // Load transferred file to get data
 
                 data_transfer = (TS_File.Length / ts.TotalSeconds) / 1000000; //Transferred MB/s
-                Console.WriteLine("Estimated Transfer Speed USB3.0: {0}", data_transfer);
+                Console.WriteLine("Estimated Transfer Speed MB/s USB3.0: {0}", data_transfer);
             }
 
             catch (ArgumentNullException dnfe)
