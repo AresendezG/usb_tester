@@ -61,7 +61,7 @@ namespace USB_Testing
                     drives_found++;
                     if (d.IsReady == true)
                     {
-                        
+
                         Console.WriteLine("  Volume label: {0}", d.VolumeLabel);
                         Console.WriteLine("  Root Directory: {0}", d.RootDirectory);
                         Console.WriteLine("  File system: {0}", d.DriveFormat);
@@ -73,7 +73,8 @@ namespace USB_Testing
             }
         }
 
-        public void list_removable_parsable() {
+        public void list_removable_parsable()
+        {
 
             foreach (DriveInfo d in available_drives)
             {
@@ -93,13 +94,16 @@ namespace USB_Testing
 
         }
 
-        public int count_removable(){
+        public int count_removable()
+        {
             int drives_found = 0;
             foreach (DriveInfo d in available_drives)
             {
-                if ((d.DriveType.ToString()).ToLower() == "removable") { 
-                    if (d.IsReady == true) {
-                    drives_found++;
+                if ((d.DriveType.ToString()).ToLower() == "removable")
+                {
+                    if (d.IsReady == true)
+                    {
+                        drives_found++;
                     }
                 }
             }
@@ -113,7 +117,7 @@ namespace USB_Testing
             string dest_filename_USB3 = "F:\\testfile.bin";
             double data_transfer = 0;
             int i = 0;
-            int j=0;
+            int j = 0;
             //Get a random USB Drive
 
             // Pick a random USB 3.0 Drive
@@ -121,25 +125,25 @@ namespace USB_Testing
             // Pick a random USB 2.0 drive
             int usb3_drive = 0;
 
-                foreach (DriveInfo d in available_drives)
+            foreach (DriveInfo d in available_drives)
+            {
+                if (d.VolumeLabel.ToString().IndexOf("MOTOUS") != -1)
                 {
-                    if (d.VolumeLabel.ToString().IndexOf("MOTOUS") != -1)
-                    {
-                        this.USB3_Drives[i] = d.Name;
-                        i++;
-                    }
-                    if (d.VolumeLabel.ToString().IndexOf("_USB2") != -1)
-                    {
-                        this.USB2_Drives[j] = d.Name;
-                        j = j+1;
-                    } 
-
+                    this.USB3_Drives[i] = d.Name;
+                    i++;
+                }
+                if (d.VolumeLabel.ToString().IndexOf("_USB2") != -1)
+                {
+                    this.USB2_Drives[j] = d.Name;
+                    j = j + 1;
                 }
 
+            }
+
             try //Write a file in the USB 2.0 drive and log the speed
-             {
+            {
                 //int RandomDrive = RandomNumber(0, 11);
-                dest_filename_USB2 = Path.Combine(this.USB2_Drives[usb2_drive], "TestFile.bin"); 
+                dest_filename_USB2 = Path.Combine(this.USB2_Drives[usb2_drive], "TestFile.bin");
                 Stopwatch stopWatch = new Stopwatch();
                 stopWatch.Start();
                 File.Copy(source_filename, dest_filename_USB2); //Copy the file to USB2.0 drive
@@ -148,26 +152,38 @@ namespace USB_Testing
                 TimeSpan ts = stopWatch.Elapsed;
 
                 FileInfo TS_File = new FileInfo(source_filename); // Load transferred file to get data
-                
-                 data_transfer = (TS_File.Length / ts.TotalSeconds)/ 1000000; //Transferred MB/s
+
+                data_transfer = (TS_File.Length / ts.TotalSeconds) / 1000000; //Transferred MB/s
                 Console.WriteLine("Estimated Transfer Speed MB/s USB2.0: {0}", data_transfer);
             }
-            catch (DirectoryNotFoundException dnfe)
+
+            catch (ArgumentNullException dnfe)
             {
-                Console.WriteLine("ERROR: Drive was not found, Disconnected");
+                if (USB2_Drives[usb2_drive] == null) // Argument null exception triggered due to no drives with label USB3 found
+                    Console.WriteLine("ERROR: No USB2.0 Drives were found");
+                else
+                    Console.WriteLine("ERROR: Unexpected Error, see message");
+                return dnfe.HResult;
+            }
+
+            catch (IOException dnfe)
+            {
+                Console.WriteLine("ERROR: IO Error Exception, the file might be already copied to drive or non existent");
+                Console.WriteLine(dnfe.Message);
+                return dnfe.HResult;
+            }
+
+            catch (IndexOutOfRangeException dnfe)
+            {
+                Console.WriteLine("ERROR: No USB2.0 Drive was found");
                 Console.WriteLine(dnfe.Message);
                 return dnfe.HResult;
             }
 
             catch (UnauthorizedAccessException dnfe)
             {
-                Console.WriteLine(dnfe.Message); //File already copied
-                return dnfe.HResult;
-            }
-
-            catch (FileNotFoundException dnfe)
-            {
-                Console.WriteLine("ERROR: File not found");
+                DriveInfo d = new DriveInfo(USB2_Drives[usb2_drive]);
+                Console.WriteLine("ERROR: Cannot Write into this USB Drive: {0}", d.VolumeLabel);
                 Console.WriteLine(dnfe.Message); //File already copied
                 return dnfe.HResult;
             }
@@ -190,21 +206,36 @@ namespace USB_Testing
                 Console.WriteLine("Estimated Transfer Speed USB3.0: {0}", data_transfer);
             }
 
+            catch (ArgumentNullException dnfe)
+            {
+
+                if (USB3_Drives[usb3_drive] == null) // Argument null exception triggered due to no drives with label USB3 found
+                    Console.WriteLine("ERROR: No USB3.0 Drives were found");
+                else
+                    Console.WriteLine("ERROR: Unexpected Error, see message");
+                return dnfe.HResult;
+            }
+
+
+            catch (IndexOutOfRangeException dnfe) // Triggered if USB3_Drives array is empty (No drives were detected)
+            {
+                Console.WriteLine("ERROR: No USB3.0 Drive was found");
+                Console.WriteLine(dnfe.Message);
+            }
+
+
             catch (UnauthorizedAccessException dnfe)
             {
+                DriveInfo d = new DriveInfo(USB3_Drives[usb3_drive]);
+                Console.WriteLine("ERROR: Cannot Write into this USB Drive: {0}", d.VolumeLabel);
                 Console.WriteLine(dnfe.Message); //File already copied
                 return dnfe.HResult;
             }
 
-            catch (DirectoryNotFoundException dnfe)
+            catch (IOException dnfe)
             {
-                Console.WriteLine("ERROR: Drive was not found or was disconnected");
+                Console.WriteLine("ERROR: File might be already copied or Non Existent, see message");
                 Console.WriteLine(dnfe.Message);
-                return dnfe.HResult;
-            }
-            catch (FileNotFoundException dnfe)
-            {
-                Console.WriteLine("ERROR: File not found");
                 return dnfe.HResult;
             }
 
@@ -213,7 +244,7 @@ namespace USB_Testing
 
             FileInfo USB2_File = new FileInfo(dest_filename_USB2); // Load transferred file to get data
 
-            Console.WriteLine("Read file {0} from 2.0 Drive with Lenght {1}",USB2_File.Name, USB2_File.Length);
+            Console.WriteLine("Read file {0} from 2.0 Drive with Lenght {1}", USB2_File.Name, USB2_File.Length);
 
 
             FileInfo USB3_File = new FileInfo(dest_filename_USB3);
