@@ -28,7 +28,7 @@ namespace USB_Testing
         static void Main(string[] args)
         {
             // bool exit = false;
-            string option;
+            string option, usb2_label, usb3_label;
             testing_usb TestUSB = new testing_usb();
 
             /*
@@ -38,8 +38,36 @@ namespace USB_Testing
                 "3. Help to show menu: "); */
 
             //while (exit == false) //Removing Continuous Loop
-
             // Console.WriteLine("Enter Option: ");
+
+            //Loading Init Options
+
+                // ReadInit_File Init_Options = new ReadInit_File("c:\\mtp\\site_ne_sch\\projects\\pdh_be\\hardwareio\\USBTester\\init.xml");
+                ReadInit_File Init_Options = new ReadInit_File(@"init.xml");
+
+            if (Init_Options.load_correct)
+            {
+                usb2_label = Init_Options.get_property("usb2_expected_label");
+                usb3_label = Init_Options.get_property("usb3_expected_label");
+            }
+            else
+            {
+                Init_Options = null; // Retry with default init file
+                Console.WriteLine("Trying to load Init File from [C:\\mtp\\site_ne_sch\\projects\\PDH_BE\\HardwareIO\\USB_Test\\init.xml]");
+                Init_Options = new ReadInit_File("c:\\mtp\\site_ne_sch\\projects\\PDH_BE\\HardwareIO\\USBTester\\init.xml");
+                if (Init_Options.load_correct)
+                {
+                    usb2_label = Init_Options.get_property("usb2_expected_label");
+                    usb3_label = Init_Options.get_property("usb3_expected_label");
+                }
+                else {
+                    Console.WriteLine("Unable to Load Init File, will use default Options");
+                    usb2_label = "_USB2";
+                    usb3_label = "_USB3";
+
+                }
+            }
+
             try
             {
                 option = args[0];
@@ -54,7 +82,9 @@ namespace USB_Testing
                 }
                 if (option.ToLower() == "list_removable_parsable")
                 {
-                    TestUSB.list_removable_parsable();
+                    int returncode = TestUSB.list_removable_parsable();
+                    if (returncode == 0)
+                        Console.WriteLine("Listed Devices");
                 }
                 if (option.ToLower() == "count_removable")
                 {
@@ -70,9 +100,16 @@ namespace USB_Testing
                         filename_source = args[1];
                         if (args[1] != null)
                         {
-                            int result = TestUSB.File_WR_Test(filename_source);
+                            int result = TestUSB.Test_Drive_RW(filename_source, usb2_label, "USB2.0");
                             if (result != 0)
                                 Console.WriteLine("Operation Finished with ERROR code: {0}", result);
+                            else
+                            {
+                                result = TestUSB.Test_Drive_RW(filename_source, usb3_label, "USB3.0");
+                                if (result != 0)
+                                    Console.WriteLine("Operation Finished with ERROR code: {0}", result);
+                            }
+
                         }
                         else
                             Console.WriteLine("ERROR: Enter Test filename [EX]: USBTest.exe copy_read_test c:\\image\\testimage.jpg");
