@@ -113,7 +113,8 @@ namespace USB_Testing
 
 
 
-        public int Test_Drive_RW(string source_filename, string Volume_Label, string USB_Drive_Type)
+        public int Test_Drive_RW(string source_filename, string Volume_Label, string USB_Drive_Type, int random_l, int random_h) 
+        // Pick the filename to be copied, pick the USB drive type, pick a range for select a random device out of the list 
         {
 
             string dest_filename = "E:\\testfile.bin";
@@ -123,7 +124,7 @@ namespace USB_Testing
 
             // Pick a random port having the desired label
             int usb_drive = 0;
-                usb_drive = RandomNumber(1, 12);
+                usb_drive = RandomNumber(random_l, random_h);
             //Find all drives that have the desired volume label
 
             foreach (DriveInfo d in available_drives)

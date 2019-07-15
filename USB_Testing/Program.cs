@@ -53,7 +53,7 @@ namespace USB_Testing
             else
             {
                 Init_Options = null; // Retry with default init file
-                Console.WriteLine("Trying to load Init File from [C:\\mtp\\site_ne_sch\\projects\\PDH_BE\\HardwareIO\\USB_Test\\init.xml]");
+                Console.WriteLine("Trying to load Init File from [C:\\mtp\\site_ne_sch\\projects\\PDH_BE\\HardwareIO\\USBTester\\init.xml]");
                 Init_Options = new ReadInit_File("c:\\mtp\\site_ne_sch\\projects\\PDH_BE\\HardwareIO\\USBTester\\init.xml");
                 if (Init_Options.load_correct)
                 {
@@ -98,14 +98,25 @@ namespace USB_Testing
                     try
                     {
                         filename_source = args[1];
+                        int random_l, random_h;
                         if (args[1] != null)
                         {
-                            int result = TestUSB.Test_Drive_RW(filename_source, usb2_label, "USB2.0");
+                            if (args[2] == "group3")
+                            {
+                                random_l = 0;
+                                random_h = 1;
+                            }
+                            else
+                            {
+                                random_l = 0;
+                                random_h = 4;
+                            }
+                            int result = TestUSB.Test_Drive_RW(filename_source, usb2_label, "USB2.0", random_l, random_h);
                             if (result != 0)
                                 Console.WriteLine("Operation Finished with ERROR code: {0}", result);
                             else
                             {
-                                result = TestUSB.Test_Drive_RW(filename_source, usb3_label, "USB3.0");
+                                result = TestUSB.Test_Drive_RW(filename_source, usb3_label, "USB3.0", random_l, random_h);
                                 if (result != 0)
                                     Console.WriteLine("Operation Finished with ERROR code: {0}", result);
                             }
