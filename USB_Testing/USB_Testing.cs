@@ -76,12 +76,12 @@ namespace USB_Testing
         public int list_removable_parsable()
         {
             int drives_found = 0;
+            Console.WriteLine("- Drive Label - \t - Windows Root - \t - FileSystem -");
             foreach (DriveInfo d in available_drives)
             {
 
                 if ((d.DriveType.ToString()).ToLower() == "removable")
                 {
-                    Console.WriteLine("Label \t Root \t FileSystem");
                     if (d.IsReady == true)
                     {
                         Console.WriteLine("{0} \t {1} \t {2}", d.VolumeLabel, d.RootDirectory, d.DriveFormat);
