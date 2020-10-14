@@ -97,5 +97,8 @@
   <ItemGroup>
     <None Include="Resources\USB_Tester_Logo.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\USB_Tester_Logo.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

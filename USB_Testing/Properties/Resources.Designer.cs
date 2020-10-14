@@ -71,12 +71,12 @@ namespace USB_Testing.Properties {
         }
         
         /// <summary>
-        ///   Busca un recurso adaptado de tipo System.Drawing.Icon similar a (Icono).
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Icon USB_Tester_Logo {
+        internal static System.Drawing.Bitmap USB_Tester_Logo {
             get {
                 object obj = ResourceManager.GetObject("USB_Tester_Logo", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

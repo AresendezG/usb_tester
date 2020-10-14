@@ -70,7 +70,7 @@
             // 
             // logoPictureBox
             // 
-            this.logoPictureBox.Image = global::USB_Testing.Properties.Resources.Motorola_BW_Stacked_RGB_1118;
+            this.logoPictureBox.Image = global::USB_Testing.Properties.Resources.USB_Tester_Logo;
             this.logoPictureBox.Location = new System.Drawing.Point(3, 3);
             this.logoPictureBox.Name = "logoPictureBox";
             this.tableLayoutPanel.SetRowSpan(this.logoPictureBox, 6);
