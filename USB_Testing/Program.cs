@@ -69,7 +69,9 @@ namespace USB_Testing
                         break;
 
                     case "list_fixtures":
-                        TestUSB.list_fixtures(Settings1.Default.FIX_LABEL);
+                        int count = 0;
+                        count = TestUSB.list_fixtures(Settings1.Default.FIX_LABEL);
+                        Console.WriteLine("Fixtures found: {0}", count);
                         break;
 
                     case "copy_read_test":
