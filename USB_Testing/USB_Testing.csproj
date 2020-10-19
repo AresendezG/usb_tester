@@ -82,6 +82,12 @@
     <Compile Include="SetConfigLabels.Designer.cs">
       <DependentUpon>SetConfigLabels.cs</DependentUpon>
     </Compile>
+    <Compile Include="SetFixLabel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SetFixLabel.Designer.cs">
+      <DependentUpon>SetFixLabel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -107,6 +113,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SetConfigLabels.resx">
       <DependentUpon>SetConfigLabels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SetFixLabel.resx">
+      <DependentUpon>SetFixLabel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

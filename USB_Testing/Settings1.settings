@@ -8,5 +8,8 @@
     <Setting Name="USB_2_LABEL" Type="System.String" Scope="User">
       <Value Profile="(Default)">_USB2</Value>
     </Setting>
+    <Setting Name="FIX_LABEL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">FIX_</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

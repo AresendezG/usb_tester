@@ -39,8 +39,6 @@ namespace USB_Testing
                 "2. list_removable for Only Removable Disk Drives \n " +
                 "3. Help to show menu: "); */
 
-
-
             try
             {
                 option = args[0];
@@ -61,6 +59,19 @@ namespace USB_Testing
                     case "count_removable": // Return the number of attached devices
                         Console.WriteLine((TestUSB.count_removable()).ToString()); 
                         break;
+
+                    case "set_newlabel_gui":
+                        SetFixLabel FLG = new SetFixLabel();
+                        FLG.ShowDialog();
+                        break;
+                    case "set_newlabel_cmd":
+                        Settings1.Default.FIX_LABEL = args[1];
+                        break;
+
+                    case "list_fixtures":
+                        TestUSB.list_fixtures(Settings1.Default.FIX_LABEL);
+                        break;
+
                     case "copy_read_test":
                         string filename_source;
                         // Console.WriteLine("Enter filename: ");
@@ -144,6 +155,9 @@ namespace USB_Testing
             Console.WriteLine("3. [list_removable_parsable] \t to display All Removable Drives in Minimal Detail");
             Console.WriteLine("4. [count_removable] \t to return the number of Removable Drives in PC");
             Console.WriteLine("5. [copy_read_test] \t [filename.extension] to Execute a Copy/Read Test in one of the Attached Devices");
+            Console.WriteLine("6. [list_fixtures] \t It will return a list with the Removable Drives but only those which contain a pre-defined Fixture Identifier Tag");
+            Console.WriteLine("7. [set_newlabel_gui] \t Use a GUI to change the Fixture Identifier Tag");
+            Console.WriteLine("8. [set_newlabel_cmd] \t [NEWTAG] set a new Fixture Tag by using commands");
             Console.WriteLine("6. [help] \t to display this Help Menu");
             Console.WriteLine("7. [About] \t this tool");
 

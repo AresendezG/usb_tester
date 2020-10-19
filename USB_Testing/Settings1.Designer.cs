@@ -46,5 +46,17 @@ namespace USB_Testing {
                 this["USB_2_LABEL"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("FIX_")]
+        public string FIX_LABEL {
+            get {
+                return ((string)(this["FIX_LABEL"]));
+            }
+            set {
+                this["FIX_LABEL"] = value;
+            }
+        }
     }
 }

@@ -94,6 +94,29 @@ namespace USB_Testing
 
         }
 
+        public int list_fixtures(string FixPrefix)
+        {
+            int FixtureFound = 0;
+           // Console.WriteLine("- Drive Label - \t - Windows Root - \t - FileSystem -");
+            foreach (DriveInfo d in available_drives)
+            {
+
+                if ((d.DriveType.ToString()).ToLower() == "removable")
+                {
+                    if (d.IsReady == true)
+                    {
+                        if (d.VolumeLabel.Contains(FixPrefix))
+                        {
+                            Console.WriteLine("{0} \t {1} \t {2}", d.VolumeLabel, d.RootDirectory, d.DriveFormat);
+                            FixtureFound++;
+                        }
+                    }
+                }
+            }
+
+            return FixtureFound;
+        }
+
         public int count_removable()
         {
             int drives_found = 0;
