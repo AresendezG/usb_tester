@@ -32,9 +32,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.LabelSuffixTextBox = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.CancelBtn = new System.Windows.Forms.Button();
-            this.OKBtn = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.OKBtn = new System.Windows.Forms.Button();
+            this.CancelBtn = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
@@ -73,26 +73,6 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(247, 100);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
-            // CancelBtn
-            // 
-            this.CancelBtn.Location = new System.Drawing.Point(3, 3);
-            this.CancelBtn.Name = "CancelBtn";
-            this.CancelBtn.Size = new System.Drawing.Size(65, 23);
-            this.CancelBtn.TabIndex = 3;
-            this.CancelBtn.Text = "Cancel";
-            this.CancelBtn.UseVisualStyleBackColor = true;
-            this.CancelBtn.Click += new System.EventHandler(this.CancelBtn_Click);
-            // 
-            // OKBtn
-            // 
-            this.OKBtn.Location = new System.Drawing.Point(74, 3);
-            this.OKBtn.Name = "OKBtn";
-            this.OKBtn.Size = new System.Drawing.Size(65, 23);
-            this.OKBtn.TabIndex = 4;
-            this.OKBtn.Text = "Confirm";
-            this.OKBtn.UseVisualStyleBackColor = true;
-            this.OKBtn.Click += new System.EventHandler(this.OKBtn_Click);
-            // 
             // tableLayoutPanel2
             // 
             this.tableLayoutPanel2.ColumnCount = 2;
@@ -107,6 +87,27 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(142, 37);
             this.tableLayoutPanel2.TabIndex = 2;
+            // 
+            // OKBtn
+            // 
+            this.OKBtn.Location = new System.Drawing.Point(74, 3);
+            this.OKBtn.Name = "OKBtn";
+            this.OKBtn.Size = new System.Drawing.Size(65, 23);
+            this.OKBtn.TabIndex = 4;
+            this.OKBtn.Text = "Confirm";
+            this.OKBtn.UseVisualStyleBackColor = true;
+            this.OKBtn.Click += new System.EventHandler(this.OKBtn_Click);
+            // 
+            // CancelBtn
+            // 
+            this.CancelBtn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.CancelBtn.Location = new System.Drawing.Point(3, 3);
+            this.CancelBtn.Name = "CancelBtn";
+            this.CancelBtn.Size = new System.Drawing.Size(65, 23);
+            this.CancelBtn.TabIndex = 3;
+            this.CancelBtn.Text = "Cancel";
+            this.CancelBtn.UseVisualStyleBackColor = true;
+            this.CancelBtn.Click += new System.EventHandler(this.CancelBtn_Click);
             // 
             // SetFixLabel
             // 

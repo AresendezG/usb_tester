@@ -31,7 +31,7 @@ namespace USB_Testing
             // bool exit = false;
             string option;
             testing_usb TestUSB = new testing_usb();
-            reloadOptions();
+            ReloadOptions();
 
             /*
             Console.WriteLine("USB Testing device Application \n " +
@@ -116,7 +116,7 @@ namespace USB_Testing
                     case "read_test":
                         break;
                     case "help":
-                        printHelp();
+                        PrintHelp();
                         break;
                     case "about":
                         AboutBox1 AB = new AboutBox1();
@@ -125,29 +125,29 @@ namespace USB_Testing
                     case "savelabel_settings":
                         SetConfigLabels FM = new SetConfigLabels();
                         FM.ShowDialog();
-                        reloadOptions();
+                        ReloadOptions();
                         break;
                     default:
-                        printHelp();
+                        PrintHelp();
                         break;
                 }
               
             }
             catch (IndexOutOfRangeException)
             {
-                printHelp();
+                PrintHelp();
             }
 
             }
 
-        private static void reloadOptions()
+        private static void ReloadOptions()
         {
             // Read Expected Labels from Settings File
             usb2_label = Settings1.Default.USB_2_LABEL;
             usb3_label = Settings1.Default.USB_3_LABEL;
         }
 
-        private static void printHelp()
+        private static void PrintHelp()
         {
             Console.WriteLine(" - USB Test Console App - ");
             Console.WriteLine("Use: USB_Testing [option1] [option2] to Execute RemovableDevices Tests: ");
