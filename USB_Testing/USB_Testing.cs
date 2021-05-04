@@ -49,6 +49,28 @@ namespace USB_Testing
             Console.WriteLine("Found: " + drives_found.ToString() + "Drives Connected");
         }
 
+        public bool IsDriveConnected(string DriveLabel)
+        {
+
+            foreach (DriveInfo d in available_drives)
+            {
+
+                if ((d.DriveType.ToString()).ToLower() == "removable")
+                {
+                    if (d.IsReady == true)
+                    {
+                        if (d.VolumeLabel == DriveLabel)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+
+        }
+
         public void list_removable() //Will display only removable drives
         {
             int drives_found = 0;
@@ -93,6 +115,25 @@ namespace USB_Testing
             return drives_found;
 
         }
+
+        public bool IsLetterInUse(string DriveLetter)
+        {
+
+            if (DriveLetter.Length > 0)
+            {
+                DriveLetter = DriveLetter.ToUpper()+":";
+                foreach (DriveInfo d in available_drives)
+                {
+                    if (d.Name.ToString().Contains(DriveLetter))
+                     return true;
+                    
+                }
+                return false;
+            }
+           else 
+             return false;
+        }
+
 
         public int list_fixtures(string FixPrefix)
         {

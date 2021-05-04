@@ -29,7 +29,8 @@ namespace USB_Testing
         static void Main(string[] args)
         {
             // bool exit = false;
-            string option;
+            string action;
+            string parameter;
             testing_usb TestUSB = new testing_usb();
             ReloadOptions();
 
@@ -41,11 +42,55 @@ namespace USB_Testing
 
             try
             {
-                option = args[0];
-                option = option.ToLower();
+                action = args[0];
+                action = action.ToLower();
+                
 
-                switch (option)
+
+                switch (action)
                 {
+
+                    case "remount":
+                        // If user did not pass the right args, it will go into an exception
+                        string DriveLabel = args[1];
+                        string MountingLetter = args[2];
+                        // User passed a correct 
+
+                        if (MountingLetter.Length != 1)
+                        {
+                            IndexOutOfRangeException e = new IndexOutOfRangeException();
+                            throw e;
+                        }
+                        // validate the character is a Letter:
+                        char[] ByteVal = MountingLetter.ToUpper().ToCharArray();
+                        if (ByteVal[0] > 0x5A || ByteVal[0] < 0x41)
+                        {
+                            ArgumentException Ax = new ArgumentException();
+                            throw Ax;
+                        }
+
+                        // Check if letter is available:
+                        if (TestUSB.IsLetterInUse(MountingLetter.Substring(0,1)))
+                        {
+                            Console.WriteLine("ERROR:\tDrive already mounted in Letter: "+MountingLetter.Substring(0,1));
+                            break;
+                        }
+                        else
+                        {
+                            if(TestUSB.IsDriveConnected(DriveLabel)) // Label is valid
+                            {
+                                // Remount code using Winapi
+                            }
+                            else
+                            {
+                                Console.WriteLine("ERROR:\tThis Drive is not Connected to the System");
+                            }
+
+                        }
+
+
+                        break;
+
                     case "list_devices": // List All the Drives in PC
                         TestUSB.list_devices();
                         break;
@@ -137,6 +182,10 @@ namespace USB_Testing
             {
                 PrintHelp();
             }
+            catch (ArgumentException)
+            {
+                Console.WriteLine("ERROR:\tThe Argument is not a valid Letter");
+            }
 
             }
 
@@ -150,18 +199,19 @@ namespace USB_Testing
         private static void PrintHelp()
         {
             Console.WriteLine(" - USB Test Console App - ");
-            Console.WriteLine("Use: USB_Testing [option1] [option2] to Execute RemovableDevices Tests: ");
+            Console.WriteLine("Use: usb_tester.exe [option1] [option2] to Execute RemovableDevices Tests: ");
             Console.WriteLine("Options Available: ");
-            Console.WriteLine("1. [list_devices] \t to List All Drives Available in PC");
-            Console.WriteLine("2. [list_removable] \t to display All Removable Drives available in PC");
-            Console.WriteLine("3. [list_removable_parsable] \t to display All Removable Drives in Minimal Detail");
+            Console.WriteLine("1. [list_devices] \tto List All Drives Available in PC");
+            Console.WriteLine("2. [list_removable] \tto display All Removable Drives available in PC");
+            Console.WriteLine("3. [list_removable_parsable] \tto display All Removable Drives in Minimal Detail");
             Console.WriteLine("4. [count_removable] \t to return the number of Removable Drives in PC");
-            Console.WriteLine("5. [copy_read_test] \t [filename.extension] to Execute a Copy/Read Test in one of the Attached Devices");
-            Console.WriteLine("6. [list_fixtures] \t It will return a list with the Removable Drives but only those which contain a pre-defined Fixture Identifier Tag");
-            Console.WriteLine("7. [set_newlabel_gui] \t Use a GUI to change the Fixture Identifier Tag");
-            Console.WriteLine("8. [set_newlabel_cmd] \t [NEWTAG] set a new Fixture Tag by using commands");
-            Console.WriteLine("6. [help] \t to display this Help Menu");
-            Console.WriteLine("7. [About] \t this tool");
+            Console.WriteLine("5. [copy_read_test] [filename] \tto Execute a Copy/Read Test in one of the Attached Devices");
+            Console.WriteLine("6. [list_fixtures] \tIt will return a list with the Removable Drives but only those which contain a pre-defined Fixture Identifier Tag");
+            Console.WriteLine("7. [set_newlabel_gui] \tUse a GUI to change the Fixture Identifier Tag");
+            Console.WriteLine("8. [set_newlabel_cmd] \t[NEWTAG] set a new Fixture Tag by using commands");
+            Console.WriteLine("9. [remount] [USBLABEL] [DRIVE] \tto mount the drive with USBLABEL to the [Drive] letter");
+            Console.WriteLine("10. [help] \tto display this Help Menu");
+            Console.WriteLine("11. [About] \t this tool");
 
         }
            
