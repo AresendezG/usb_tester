@@ -8,17 +8,16 @@ using System.IO;
 namespace USB_Testing
 {
 
-    // USB Testing Program in C#
-    // Author: EARG 
-    // Last Modified: October 2020
-    // ARGE Software® is a Trademark of ARGE Technologies LLC
+    // USB Utilities with Drive Labels and Mount points.
+    // Author: Esli Alejandro Resendez 
+    // Last Modified: May 2021
+    // ARGE Software® is a Trademark of ARGE Technologies, LLC
 
     /*
          USB Testing device Application as Command Console
          list_devices for All Devices
          list_removable for Only Removable Disk Drives
-         count_removable to display how many removable devices are attached to PC
-                
+         count_removable to display how many removable devices are attached to PC                
      */
 
     class Program
