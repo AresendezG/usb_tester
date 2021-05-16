@@ -80,18 +80,43 @@ namespace USB_Testing
                         // Check if letter is available:
                         if (TestUSB.IsLetterInUse(MountingLetter.Substring(0,1)))
                         {
-                            Console.WriteLine("ERROR:\tThere is a Drive already mounted in Letter: "+MountingLetter.Substring(0,1));
-                            break;
+                            // Drive letter selected by user is busy
+                            // Find if our drive is the one mounted there:
+                            string WhereIsOurDrive = TestUSB.GetDriveLetter(DriveLabel);
+                            if (WhereIsOurDrive.Contains(MountingLetter))
+                            {
+                                Console.WriteLine("Remount Completed");
+                                break;
+                            }
+                            else // There's something mounted in user's letter, but not the desired label
+                            {
+                                Console.WriteLine("ERROR:\tThere is a Drive already mounted in Letter: " + MountingLetter.Substring(0, 1));
+                                break;
+                            }
                         }
                         else
                         {
-                            if(TestUSB.IsDriveConnected(DriveLabel)) // Label is valid
+                            if(TestUSB.IsDriveConnected(DriveLabel)) // Check if this Label is connected to Computer
                             {
                                 // Remount code using Winapi
                                 string CurrentLetter = TestUSB.GetDriveLetter(DriveLabel);
                                 string ExpectedDrive = MountingLetter.ToUpper() + ":\\";
 
-                                ChangeDriveLetter(CurrentLetter, ExpectedDrive);
+                                if (CurrentLetter != ExpectedDrive) {
+                                    try
+                                    {
+                                        ChangeDriveLetter(CurrentLetter, ExpectedDrive);
+                                        Console.WriteLine("Remount Completed");
+                                    }
+                                    catch
+                                    {
+                                        Console.WriteLine("ERROR: Remount Error");
+                                    }
+                                }
+                                else // Drive is already mounted there
+                                {
+                                    Console.WriteLine("Remount Completed");
+                                }
 
                             }
                             else
@@ -100,7 +125,6 @@ namespace USB_Testing
                             }
 
                         }
-
 
                         break;
 
@@ -227,17 +251,17 @@ namespace USB_Testing
             Console.WriteLine(" - USB Test Console App - ");
             Console.WriteLine("Use: usb_tester.exe [option1] [option2] to Execute RemovableDevices Tests: ");
             Console.WriteLine("Options Available: ");
-            Console.WriteLine("1. [list_devices] \tto List All Drives Available in PC");
-            Console.WriteLine("2. [list_removable] \tto display All Removable Drives available in PC");
+            Console.WriteLine("1. [list_devices]\tto List All Drives Available in PC");
+            Console.WriteLine("2. [list_removable]\tto display All Removable Drives available in PC");
             Console.WriteLine("3. [list_removable_parsable] \tto display All Removable Drives in Minimal Detail");
-            Console.WriteLine("4. [count_removable] \t to return the number of Removable Drives in PC");
+            Console.WriteLine("4. [count_removable]\t to return the number of Removable Drives in PC");
             Console.WriteLine("5. [copy_read_test] [filename] \tto Execute a Copy/Read Test in one of the Attached Devices");
-            Console.WriteLine("6. [list_fixtures] \tIt will return a list with the Removable Drives but only those which contain a pre-defined Fixture Identifier Tag");
+            Console.WriteLine("6. [list_fixtures]\tIt will return a list with the Removable Drives but only those which contain a pre-defined Fixture Identifier Tag");
             Console.WriteLine("7. [set_newlabel_gui] \tUse a GUI to change the Fixture Identifier Tag");
             Console.WriteLine("8. [set_newlabel_cmd] \t[NEWTAG] set a new Fixture Tag by using commands");
             Console.WriteLine("9. [remount] [USBLABEL] [DRIVE] \tto mount the drive with USBLABEL to the [Drive] letter");
-            Console.WriteLine("10. [help] \tto display this Help Menu");
-            Console.WriteLine("11. [About] \t this tool");
+            Console.WriteLine("10. [help]\tto display this Help Menu");
+            Console.WriteLine("11. [About]\t this tool");
 
         }
            
