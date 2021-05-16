@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.IO;
+using System.Runtime.InteropServices;
 
 namespace USB_Testing
 {
@@ -24,6 +21,18 @@ namespace USB_Testing
     {
 
         private static string usb2_label, usb3_label;
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool GetVolumeNameForVolumeMountPoint(string lpszVolumeMountPoint, [Out] StringBuilder lpszVolumeName, uint cchBufferLength);
+
+        [DllImport("kernel32.dll")]
+        static extern bool DeleteVolumeMountPoint(string lpszVolumeMountPoint);
+
+        [DllImport("kernel32.dll")]
+        static extern bool SetVolumeMountPoint(string lpszVolumeMountPoint, string lpszVolumeName);
+
+        const int MAX_PATH = 260;
+
 
         static void Main(string[] args)
         {
@@ -60,7 +69,7 @@ namespace USB_Testing
                             IndexOutOfRangeException e = new IndexOutOfRangeException();
                             throw e;
                         }
-                        // validate the character is a Letter:
+                        // validate the Argument character is actually a Letter:
                         char[] ByteVal = MountingLetter.ToUpper().ToCharArray();
                         if (ByteVal[0] > 0x5A || ByteVal[0] < 0x41)
                         {
@@ -71,7 +80,7 @@ namespace USB_Testing
                         // Check if letter is available:
                         if (TestUSB.IsLetterInUse(MountingLetter.Substring(0,1)))
                         {
-                            Console.WriteLine("ERROR:\tDrive already mounted in Letter: "+MountingLetter.Substring(0,1));
+                            Console.WriteLine("ERROR:\tThere is a Drive already mounted in Letter: "+MountingLetter.Substring(0,1));
                             break;
                         }
                         else
@@ -79,6 +88,11 @@ namespace USB_Testing
                             if(TestUSB.IsDriveConnected(DriveLabel)) // Label is valid
                             {
                                 // Remount code using Winapi
+                                string CurrentLetter = TestUSB.GetDriveLetter(DriveLabel);
+                                string ExpectedDrive = MountingLetter.ToUpper() + ":\\";
+
+                                ChangeDriveLetter(CurrentLetter, ExpectedDrive);
+
                             }
                             else
                             {
@@ -193,6 +207,19 @@ namespace USB_Testing
             // Read Expected Labels from Settings File
             usb2_label = Settings1.Default.USB_2_LABEL;
             usb3_label = Settings1.Default.USB_3_LABEL;
+        }
+
+        private static void ChangeDriveLetter(string CurrentDrive, string ExpectedDrive)
+        {
+            StringBuilder volume = new StringBuilder(MAX_PATH);
+            if (!GetVolumeNameForVolumeMountPoint(@""+CurrentDrive+"", volume, (uint)MAX_PATH))
+                Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
+
+            if (!DeleteVolumeMountPoint(@"" + CurrentDrive + ""))
+                Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
+
+            if (!SetVolumeMountPoint(@"" + ExpectedDrive + "", volume.ToString()))
+                Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
         }
 
         private static void PrintHelp()

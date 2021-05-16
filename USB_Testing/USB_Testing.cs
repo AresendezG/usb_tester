@@ -71,6 +71,27 @@ namespace USB_Testing
 
         }
 
+        public string GetDriveLetter(string DriveLabel)
+        {
+
+            foreach (DriveInfo d in available_drives)
+            {
+
+                if ((d.DriveType.ToString()).ToLower() == "removable")
+                {
+                    if (d.IsReady == true)
+                    {
+                        if (d.VolumeLabel == DriveLabel)
+                        {
+                            return d.RootDirectory.ToString();
+                        }
+                    }
+                }
+            }
+
+            return "NULL";
+        }
+
         public void list_removable() //Will display only removable drives
         {
             int drives_found = 0;
