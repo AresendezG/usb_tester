@@ -7,7 +7,7 @@
     <ProjectGuid>{327FBCFA-2EC9-46DF-B786-350C0A7CC532}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>USB_Testing</RootNamespace>
-    <AssemblyName>usb_tester</AssemblyName>
+    <AssemblyName>USB DiagTool</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
