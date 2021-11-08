@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using Microsoft.Win32;
+using System.IO.Ports;
+using System.Linq;
 
 namespace USB_Testing
 {
@@ -197,6 +202,27 @@ namespace USB_Testing
                         break;
                     case "read_test":
                         break;
+
+                    case "find_comport":
+                        string vid = args[1];
+                        string pid = args[2];
+
+                        List<string> DetectedComPorts = ComPortNames(vid, pid);
+
+                        if (DetectedComPorts.Count == 1)
+                        {
+                            Console.WriteLine("ComPort is: " + DetectedComPorts[0]);
+                        }
+                        else if (DetectedComPorts.Count == 0)
+                        {
+                            Console.WriteLine("Error: No USB Device find");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Error: More than 1 Device connected");
+                        }
+
+                        break;
                     case "help":
                         PrintHelp();
                         break;
@@ -260,11 +286,48 @@ namespace USB_Testing
             Console.WriteLine("7. [set_newlabel_gui] \tUse a GUI to change the Fixture Identifier Tag");
             Console.WriteLine("8. [set_newlabel_cmd] \t[NEWTAG] set a new Fixture Tag by using commands");
             Console.WriteLine("9. [remount] [USBLABEL] [DRIVE] \tto mount the drive with USBLABEL to the [Drive] letter");
-            Console.WriteLine("10. [help]\tto display this Help Menu");
-            Console.WriteLine("11. [About]\t this tool");
+            Console.WriteLine("10. [find_comport] [vid] [pid] \tto find the Com Port using a given vid and pid values");
+            Console.WriteLine("11. [help]\tto display this Help Menu");
+            Console.WriteLine("12. [About]\t this tool");
 
         }
-           
+
+
+        private static List<string> ComPortNames(String VID, String PID)
+        {
+            String pattern = String.Format("^VID_{0}.PID_{1}", VID, PID);
+            Regex _rx = new Regex(pattern, RegexOptions.IgnoreCase);
+            List<string> comports = new List<string>();
+
+            RegistryKey rk1 = Registry.LocalMachine;
+            RegistryKey rk2 = rk1.OpenSubKey("SYSTEM\\CurrentControlSet\\Enum");
+
+            foreach (String s3 in rk2.GetSubKeyNames())
+            {
+
+                RegistryKey rk3 = rk2.OpenSubKey(s3);
+                foreach (String s in rk3.GetSubKeyNames())
+                {
+                    if (_rx.Match(s).Success)
+                    {
+                        RegistryKey rk4 = rk3.OpenSubKey(s);
+                        foreach (String s2 in rk4.GetSubKeyNames())
+                        {
+                            RegistryKey rk5 = rk4.OpenSubKey(s2);
+                            string location = (string)rk5.GetValue("LocationInformation");
+                            RegistryKey rk6 = rk5.OpenSubKey("Device Parameters");
+                            string portName = (string)rk6.GetValue("PortName");
+                            if (!String.IsNullOrEmpty(portName) && SerialPort.GetPortNames().Contains(portName))
+                                comports.Add((string)rk6.GetValue("PortName"));
+                            //RegistryKey rk6 = rk5.OpenSubKey("Device Parameters");
+                            //comports.Add((string)rk6.GetValue("PortName"));
+                        }
+                    }
+                }
+            }
+            return comports;
+        }
+
 
     }
 }
