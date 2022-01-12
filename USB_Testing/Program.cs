@@ -6,13 +6,14 @@ using System.Text.RegularExpressions;
 using Microsoft.Win32;
 using System.IO.Ports;
 using System.Linq;
+using System.Net.Sockets;
 
 namespace USB_Testing
 {
 
     // USB Utilities with Drive Labels and Mount points.
     // Author: Esli Alejandro Resendez 
-    // Last Modified: May 2021
+    // Last Modified: Jan 2022
     // ARGE Software® is a Trademark of ARGE Technologies, LLC
 
     /*
@@ -58,8 +59,6 @@ namespace USB_Testing
                 action = args[0];
                 action = action.ToLower();
                 
-
-
                 switch (action)
                 {
 
@@ -219,10 +218,38 @@ namespace USB_Testing
                         }
                         else
                         {
-                            Console.WriteLine("Error: More than 1 Device connected");
+                            Console.WriteLine("Error: More than 1 Device with the given descriptor is connected");
                         }
 
                         break;
+                    case "test_tcp_port":
+                        string IPAddress = args[1];
+                        string TCP_Port = args[2];
+
+                        TcpClient TestClient = new TcpClient();
+                        try
+                        {
+                            TestClient.Connect(IPAddress, Convert.ToInt32(TCP_Port));
+                            if (TestClient.Connected)
+                            {
+                                Console.WriteLine("TCP Port: " + TCP_Port + " At Host: " + IPAddress + " is Active");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Cannot Connect to selected TCP Port");
+                            }
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Failure while trying to Connect to the Port: " + TCP_Port);
+                        }
+                        finally
+                        {
+                            TestClient.Close();
+                        }
+
+                    break;
+
                     case "help":
                         PrintHelp();
                         break;

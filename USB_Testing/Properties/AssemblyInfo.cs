@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("USB Test Tool")]
-[assembly: AssemblyDescription("Console Application tool to run Removable Drive Tests attached to Host PC")]
+[assembly: AssemblyTitle("TestTools")]
+[assembly: AssemblyDescription("Console Application with Tools to test USB and other Features")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ARGE Technologies, LLC")]
-[assembly: AssemblyProduct("USB Test Tool")]
-[assembly: AssemblyCopyright("Copyright 2020 ©")]
+[assembly: AssemblyProduct("TestTools")]
+[assembly: AssemblyCopyright("Copyright 2022 ©")]
 [assembly: AssemblyTrademark("ARGE Software ®")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.1.0.6")]
-[assembly: AssemblyFileVersion("2.1.0.6")]
+[assembly: AssemblyVersion("3.2.0.6")]
+[assembly: AssemblyFileVersion("3.2.0.6")]
